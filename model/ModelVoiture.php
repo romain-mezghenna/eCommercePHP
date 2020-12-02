@@ -93,7 +93,7 @@ class ModelVoiture {
 
   // une methode d'affichage.
   public function afficher() {
-    echo "Voiture d'id $this->idVoiture, de modele $this->modele, de marque $this->marque, dont le prix est $this->prix, d'année $this->annee et de statut $this->statut <br>";
+    echo "Voiture d'immatriculation $this->immatriculation, de modele $this->modele, de marque $this->marque, dont le prix est $this->prix, d'année $this->annee et de statut $this->statut <br>";
   }
 
   public static function getAllVoitures() {
