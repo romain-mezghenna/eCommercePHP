@@ -1,11 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>
-		Formulaire
-</title>
-</head>
-<body>
 	<form method="get" action="index.php">
   <fieldset>
     <legend>Mon formulaire :</legend>
@@ -30,5 +22,4 @@
   </fieldset>
 </form>
 
-</body>
-</html>
+
