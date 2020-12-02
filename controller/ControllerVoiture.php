@@ -1,29 +1,29 @@
 <?php
-require_once('../model/ModelVoiture.php'); // chargement du modèle
+require_once (File::build_path(array('model','ModelVoiture.php')));// chargement du modèle
 class ControllerVoiture {
     public static function readAll() {
         $tab_v = ModelVoiture::getAllVoitures();     //appel au modèle pour gerer la BD
-        require('../view/voiture/list.php');  //"redirige" vers la vue
+        require(File::build_path(array('view','voitures','list.php')));  //"redirige" vers la vue
     }
 
     public static function read(){
         $immatriculation = $_GET['immatriculation'];
         $v=ModelVoiture::getVoitureByImmat($immatriculation);
         if($v==null){
-            require('../view/voiture/error.php');
+            require(File::build_path(array('view','voitures','error.php')));
         }else
-            require('../view/voiture/detail.php');
+            require(File::build_path(array('view','voitures','detail.php')));
     }
 
     public static function create(){
-        require('../view/voiture/create.php');
+        require(File::build_path(array('view','voitures','create.php')));
     }
 
     public static function created(){
-        $v = new ModelVoiture($_POST['marque'],$_POST['couleur'],$_POST['immatriculation']);
+        $v = new ModelVoiture($_POST['modele'],$_POST['marque'],$_POST['prix'],$_POST['']);
         $estcree=$v->save();
         if($estcree==false){
-            require('../view/voiture/errorImmat.php');
+            require(File::build_path(array('view','voitures','error.php')));
         } else{
             self::readAll();
         }
