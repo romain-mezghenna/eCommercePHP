@@ -59,7 +59,7 @@ class ControllerVoiture {
     public static function delete(){
         $controller='voitures';
         $immatriculation=$_GET['immatriculation'];
-        $sql = "DELETE FROM voiture WHERE immatriculation=:immatriculation";
+        $sql = "DELETE FROM Voitures WHERE immatriculation=:immatriculation";
         try {
             $req_prep = Model::$pdo->prepare($sql);
             $value = array(
@@ -76,5 +76,44 @@ class ControllerVoiture {
 
         }
     }
+
+    public static function update(){
+        $controller='voitures';
+        $immatriculation=$_GET['immatriculation'];
+        $v = ModelVoiture::getVoitureByImmat($immatriculation);
+        $view='update';
+        $pagetitle="Modifier une voiture";
+        require (File::build_path(array('view','view.php')));
+    }
+
+    public static function updated(){
+        $controller='voitures';
+        $immatriculation=$_GET['immatriculation'];
+        $v = ModelVoiture::getVoitureByImmat($immatriculation);
+        $data = array(
+          'immatriculation'=>$immatriculation,
+          'modele'=>$_GET['modele'],
+          'marque'=>$_GET['marque'],
+          'prix'=>$_GET['prix'],
+          'annee'=>$_GET['annee'],
+            'statut'=>$_GET['statut'],
+            'imagelink'=>$_GET['imagelink']
+        );
+        $estModifiee = ModelVoiture::update($data);
+        if ($estModifiee){
+            $view = 'updated';
+            $pagetitle="Voiture modifiée";
+            require (File::build_path(array('view','view.php')));
+            self::readAll();
+        } else {
+            $view='error';
+            $pagetitle='Erreur';
+            require(File::build_path(array('view','view.php')));
+        }
+
+
+    }
+
+
 }
 ?>

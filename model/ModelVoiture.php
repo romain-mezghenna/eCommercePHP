@@ -148,6 +148,25 @@ class ModelVoiture {
       die();
     }
   }
+
+  public static function update($data){
+    $sql = "UPDATE Voitures SET `modele` =:modele, `marque` =:marque, `prix` =:prix, `annee` =:annee, `imagelink` = :imagelink, statut =:statut WHERE `Voitures`.`immatriculation` = :immatriculation";
+    try {
+      $req_prep = Model::$pdo->prepare($sql);
+      $req_prep->execute($data);
+      return true;
+    }
+    catch (PDOException $e) {
+      if($e->getCode()==23000){
+        return false;
+      }else {
+        echo $e->getMessage();
+      }
+      die();
+    }
+
+  }
+
 }
 ?>
 
