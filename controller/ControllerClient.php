@@ -16,7 +16,7 @@ class ControllerClient
     public static function read(){
         $idclient = $_GET['idClient'];
         $c=ModelClient::select($idclient);
-        if($c==null){
+        if(!$c){
             $view='error';
             $pagetitle='Erreur';
             require(File::build_path(array('view','view.php')));

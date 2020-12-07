@@ -7,14 +7,26 @@
     <meta charset="utf-8">
     <title><?php echo $pagetitle;?></title>
 </head>
-<nav style="display: inline">
-    <ul>
-        <li><a href='index.php'>Accueil</a></li>
-        <li><a href='index.php?action=create&controller=voiture'>Ajouter une voiture</a></li>
-        <li><a href='index.php?controller=client'>Clients</a></li>
-        <li> <a href="index.php?controller=client&action=create">Ajouter un client</a> </li>
-    </ul>
-</nav>
+<header>
+    <div class="menu">
+        <div class="menugauche">
+            <a class="textmenugauche" href='index.php'>Accueil</a>
+        </div>
+        <div id="menumilieu">
+            <a href="list.php"><img src="<?php echo File::build_path(array('images','logo2.png'));?>" ></a>
+        </div>
+        <div class="menudroite">
+
+            <a class="textmenudroite" href="monCompte.php">Mon Compte (non fonctionnel)</a>
+            <a class="textmenudroite" href="index.php?action=create&controller=voiture">Ajouter Une voiture</a>
+            <a class="textmenudroite" href="index.php?&controller=client">Listes des clients</a>
+            <a class ="textmenudroite" href="index.php?controller=client&action=create">Ajouter un client</a>
+        </div>
+        <div id="panier">
+            <img src="<?php echo File::build_path(array('images','panier.png'));?>" alt="">
+        </div>
+    </div>
+</header>
 <!--------------header--------->
 
 <body>
@@ -22,4 +34,9 @@
 require (File::build_path(array("view", static::$object, $view.".php")));
 ?>
 </body>
+<footer>
+
+</footer>
+
+
 </html>
