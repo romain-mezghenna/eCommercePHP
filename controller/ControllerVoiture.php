@@ -1,11 +1,11 @@
 <?php
 require_once (File::build_path(array('model','ModelVoiture.php')));// chargement du modèle
 class ControllerVoiture {
+    protected static $object = 'voitures';
 
     public static function readAll() {
-        $tab_v = ModelVoiture::getAllVoitures(); //appel au modèle pour gerer la BD
+        $tab_v = ModelVoiture::selectAll(); //appel au modèle pour gerer la BD
         $view='list';
-        $controller='voitures';
         $pagetitle='Liste des voitures';
           //"redirige" vers la vue
         require(File::build_path(array('view','view.php')));
@@ -13,8 +13,7 @@ class ControllerVoiture {
 
     public static function read(){
         $immatriculation = $_GET['immatriculation'];
-        $v=ModelVoiture::getVoitureByImmat($immatriculation);
-        $controller='voitures';
+        $v=ModelVoiture::select($immatriculation);
         if($v==null){
             $view='error';
             $pagetitle='Erreur';
@@ -26,14 +25,12 @@ class ControllerVoiture {
     }
 
     public static function create(){
-        $controller='voitures';
         $view='create';
         $pagetitle='Création d\'une voiture';
         require(File::build_path(array('view','view.php')));
     }
 
     public static function created(){
-        $controller='voitures';
         $v = new ModelVoiture($_GET['modele'],$_GET['marque'],$_GET['immatriculation'],$_GET['annee'],$_GET['prix'],$_GET['imagelink']);
         $estcree=$v->save();
         if($estcree==false){
@@ -42,7 +39,6 @@ class ControllerVoiture {
             require(File::build_path(array('view','view.php')));
         } else{
             $view='created';
-            $controller='voitures';
             $pagetitle='Voiture Crée';
             require(File::build_path(array('view','view.php')));
             self::readAll();
@@ -50,35 +46,28 @@ class ControllerVoiture {
     }
 
     public static function error(){
-        $controller='voitures';
         $view='error';
         $pagetitle='Erreur';
         require(File::build_path(array('view','view.php')));
     }
 
     public static function delete(){
-        $controller='voitures';
         $immatriculation=$_GET['immatriculation'];
-        $sql = "DELETE FROM Voitures WHERE immatriculation=:immatriculation";
-        try {
-            $req_prep = Model::$pdo->prepare($sql);
-            $value = array(
-                "immatriculation"=>$immatriculation,
-            );
-            $req_prep->execute($value);
+        $isDelete = ModelVoiture::delete($immatriculation);
+        if($isDelete==false){
+            $view='error';
+            $pagetitle='Erreur';
+            require(File::build_path(array('view','view.php')));
+        } else{
             $view='deleted';
-            $pagetitle='Voiture supprimée';
+            $pagetitle='Voiture Supprimée';
             require(File::build_path(array('view','view.php')));
             self::readAll();
         }
-        catch (PDOException $e) {
-            echo $e->getMessage();
 
-        }
     }
 
     public static function update(){
-        $controller='voitures';
         $immatriculation=$_GET['immatriculation'];
         $v = ModelVoiture::getVoitureByImmat($immatriculation);
         $view='update';
@@ -87,7 +76,6 @@ class ControllerVoiture {
     }
 
     public static function updated(){
-        $controller='voitures';
         $immatriculation=$_GET['immatriculation'];
         $v = ModelVoiture::getVoitureByImmat($immatriculation);
         $data = array(

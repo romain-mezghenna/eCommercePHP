@@ -18,7 +18,7 @@
 
 <body>
 <?php
-require (File::build_path(array("view", $controller, "$view.php")));
+require (File::build_path(array("view", static::$object, $view.".php")));
 ?>
 </body>
 </html>

@@ -1,6 +1,6 @@
 <?php
 require_once('Model.php');
-class ModelVoiture {
+class ModelVoiture extends Model {
   private $marque;
   private $modele;
   private $immatriculation;
@@ -8,6 +8,9 @@ class ModelVoiture {
   private $annee;
   private $prix;
   private $imagelink;
+  protected static $object = 'Voitures'; // nom de la table dans la BD
+  protected static $class = 'Voiture'; // nom du fichier sans 'Model'
+  protected static $primary = 'immatriculation'; // nom de la clé primaire de la table dans la BD
 
   public function getMarque() {
        return $this->marque;  

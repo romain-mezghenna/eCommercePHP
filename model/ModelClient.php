@@ -1,13 +1,16 @@
 <?php
 require_once('Model.php');
-class ModelClient {
+class ModelClient extends Model {
 
   private $idClient;
   private $nom;
   private $prenom;
   private $mail;
   private $password;
-  private static $cpt;
+  private static $cpt=1;
+  protected static $object='Clients';
+  protected static $class = 'Client';
+  protected static $primary = 'idClient';
 
   public function getIdClient()
   {
