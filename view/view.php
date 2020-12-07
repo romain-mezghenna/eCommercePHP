@@ -12,6 +12,7 @@
         <li><a href='index.php'>Accueil</a></li>
         <li><a href='index.php?action=create&controller=voiture'>Ajouter une voiture</a></li>
         <li><a href='index.php?controller=client'>Clients</a></li>
+        <li> <a href="index.php?controller=client&action=create">Ajouter un client</a> </li>
     </ul>
 </nav>
 <!--------------header--------->

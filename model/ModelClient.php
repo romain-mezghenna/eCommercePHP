@@ -7,7 +7,7 @@ class ModelClient extends Model {
   private $prenom;
   private $mail;
   private $password;
-  private static $cpt=1;
+  private static $cpt=0;
   protected static $object='Clients';
   protected static $class = 'Client';
   protected static $primary = 'idClient';
@@ -62,13 +62,17 @@ class ModelClient extends Model {
     $this->password = $password;
   }
 
-  public function __construct($n = NULL, $p = NULL, $m = NULL, $pass = NULL){
-    if (!is_null($n) && !is_null($p) && !is_null($m) && !is_null($pass)) {
+  public static function getCpt(){
+    self::$cpt++;
+    return self::$cpt;
+  }
+
+  public function __construct($i = NULL, $n = NULL, $p = NULL, $m = NULL, $pass = NULL){
+    if (!is_null($i) && !is_null($n)  && !is_null($p) && !is_null($m) && !is_null($pass)) {
       // Si aucun de $m, $c et $i sont nuls,
       // c'est forcement qu'on les a fournis
       // donc on retombe sur le constructeur à 3 arguments
-      $this->idClient = self::$cpt;
-      self::$cpt ++;
+      $this->idClient = $i;
       $this->nom = $n;
       $this->prenom = $p;
       $this->mail = $m;
@@ -81,35 +85,7 @@ class ModelClient extends Model {
     echo "Client d'id $this->idClient, de nom $this->nom, de prénom $this->prenom, dont le mail est $this->mail et de mot de passe $this->password<br>";
   }
 
-  public static function getAllClient() {
-    $rep = Model::$pdo->query('Select * from Clients');
-    $rep->setFetchMode(PDO::FETCH_CLASS, 'ModelClient');;
-    return $rep->fetchAll();
-  }
 
-  public function save(){
-    $sql = "INSERT INTO Clients VALUES (:idClient, :nom, :prenom, :mail, :password)";
-    try {
-      $req_prep = Model::$pdo->prepare($sql);
-      $value = array(
-          "idClient"=>$this->idClient,
-          "nom"=>$this->nom,
-          "prenom"=>$this->prenom,
-          "mail"=>$this->mail,
-          "password"=>$this->password,
-      );
-      $req_prep->execute($value);
-      return true;
-    }
-    catch (PDOException $e) {
-      if($e->getCode()==23000){
-        return false;
-      }else {
-        echo $e->getMessage();
-      }
-      die();
-    }
-  }
 }
 ?>
 

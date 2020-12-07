@@ -38,16 +38,15 @@ class Model {
 
         $table_name = static::$object;
         $class_name = 'Model'. static::$class;
+
         $primary_key= static::$primary;
-        $sql = 'SELECT * from ' . $table_name . ' WHERE ' . $primary_key . ' =:immat';
+        $sql = 'SELECT * from ' . $table_name . ' WHERE ' . $primary_key . ' =:id';
         // Préparation de la requête
         $req_prep = Model::$pdo->prepare($sql);
-        $values = array(
-            "immat" => $primary_value,
-        );
+        $values = array("id" => $primary_value);
         $req_prep->execute($values);
         // On récupère les résultats comme précédemment
-        $req_prep->setFetchMode(PDO::FETCH_CLASS, $class_name);
+        $req_prep->setFetchMode(PDO::FETCH_CLASS , $class_name);
         $tab_voit = $req_prep->fetchAll();
         if (empty($tab_voit))
             return false;
@@ -73,6 +72,57 @@ class Model {
 
         }
 
+    }
+
+    public static function update($data){
+        $table_name = static::$object;
+        $primary_key= static::$primary;
+
+        $sql = "UPDATE ". $table_name ." SET ";
+        foreach ($data as $key => $value){
+            $sql .= $key. " =:" . $key . ",";
+        }
+        $sql = rtrim($sql,',');
+        $sql .= " WHERE " . $primary_key . "=:" .$primary_key;
+        try {
+            $req_prep = Model::$pdo->prepare($sql);
+            $req_prep->execute($data);
+            return true;
+        }
+        catch (PDOException $e) {
+            if($e->getCode()==23000){
+                return false;
+            }else {
+                echo $e->getMessage();
+            }
+            die();
+        }
+
+    }
+
+    public static function save($data){
+        $table_name = static::$object;
+        $sql = "INSERT INTO " . $table_name . " VALUES(";
+        $values =array();
+        foreach ($data as $key => $value){
+            $sql .= ":".$key.",";
+
+        }
+        $sql = rtrim($sql,',');
+        $sql.=")";
+        try {
+            $req_prep = Model::$pdo->prepare($sql);
+            $req_prep->execute($data);
+            return true;
+        }
+        catch (PDOException $e) {
+            if($e->getCode()==23000){
+                return false;
+            }else {
+                echo $e->getMessage();
+            }
+            die();
+        }
     }
 
 

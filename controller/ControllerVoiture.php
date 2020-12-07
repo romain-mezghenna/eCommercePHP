@@ -25,14 +25,32 @@ class ControllerVoiture {
     }
 
     public static function create(){
-        $view='create';
+        $view='update';
         $pagetitle='Création d\'une voiture';
+        $data = array(
+            'immatriculation'=>"",
+            'modele'=>"",
+            'marque'=>"",
+            'prix'=>"",
+            'annee'=>"",
+            'statut'=>"",
+            'imagelink'=>""
+        );
+        $type='create';
         require(File::build_path(array('view','view.php')));
     }
 
     public static function created(){
-        $v = new ModelVoiture($_GET['modele'],$_GET['marque'],$_GET['immatriculation'],$_GET['annee'],$_GET['prix'],$_GET['imagelink']);
-        $estcree=$v->save();
+        $data = array(
+            'immatriculation'=>$_GET['immatriculation'],
+            'modele'=>$_GET['modele'],
+            'marque'=>$_GET['marque'],
+            'prix'=>$_GET['prix'],
+            'annee'=>$_GET['annee'],
+            'statut'=>"V",
+            'imagelink'=>$_GET['imagelink']
+        );
+        $estcree=ModelVoiture::save($data);
         if($estcree==false){
             $view='error';
             $pagetitle='Erreur';
@@ -69,15 +87,25 @@ class ControllerVoiture {
 
     public static function update(){
         $immatriculation=$_GET['immatriculation'];
-        $v = ModelVoiture::getVoitureByImmat($immatriculation);
+        $v = ModelVoiture::select($immatriculation);
         $view='update';
         $pagetitle="Modifier une voiture";
+        $data = array(
+            'immatriculation'=>$immatriculation,
+            'modele'=>$v->getModele(),
+            'marque'=>$v->getMarque(),
+            'prix'=>$v->getPrix(),
+            'annee'=>$v->getAnnee(),
+            'statut'=>$v->getStatut(),
+            'imagelink'=>$v->getImagelink()
+        );
+        $type='update';
         require (File::build_path(array('view','view.php')));
     }
 
     public static function updated(){
         $immatriculation=$_GET['immatriculation'];
-        $v = ModelVoiture::getVoitureByImmat($immatriculation);
+        $v = ModelVoiture::select($immatriculation);
         $data = array(
           'immatriculation'=>$immatriculation,
           'modele'=>$_GET['modele'],
