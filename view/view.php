@@ -3,8 +3,8 @@
 
 <head>
     <!-- L'en-tête du document avec au moins un titre -->
-    <link type="text/css" rel="stylesheet"  href="style.css">
     <meta charset="utf-8">
+    <link rel="stylesheet"  href="css/style.css">
     <title><?php echo $pagetitle;?></title>
 </head>
 <header>
@@ -19,7 +19,7 @@
 
             <a class="textmenudroite" href="monCompte.php">Mon Compte (non fonctionnel)</a>
             <a class="textmenudroite" href="index.php?action=create&controller=voiture">Ajouter Une voiture</a>
-            <a class="textmenudroite" href="index.php?&controller=client">Listes des clients</a>
+            <a class="textmenudroite" href="index.php?controller=client">Listes des clients</a>
             <a class ="textmenudroite" href="index.php?controller=client&action=create">Ajouter un client</a>
         </div>
         <div id="panier">
