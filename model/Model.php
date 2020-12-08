@@ -20,7 +20,7 @@ class Model {
             if (Conf::getDebug()) {
                 echo $e->getMessage(); // affiche un message d'erreur
             } else {
-                echo 'Une erreur est survenue <a href=""> retour a la page d\'accueil </a>';
+                echo 'Une erreur est survenue <a href="index.php"> retour a la page d\'accueil </a>';
             }
             die();
         }
@@ -51,6 +51,29 @@ class Model {
         if (empty($tab_voit))
             return false;
         return $tab_voit[0];
+    }
+
+    public static function getCpt(){ //calculer le prochain indice de l'ID dans les tables Clients et Commande
+
+        $table_name = static::$object;
+        $primary_key= static::$primary;
+
+        $sql = "SELECT MAX(". $primary_key . ") as max FROM " . $table_name;
+
+        try {
+            $req_prep = Model::$pdo->prepare($sql);
+            $req_prep->execute();
+            $req_prep->setFetchMode(PDO::FETCH_OBJ);
+            $tab = $req_prep->fetchAll();
+            $return =(int) $tab[0]->max;
+            $return++;
+            return $return;
+        }
+        catch (PDOException $e) {
+            echo $e->getMessage();
+
+        }
+
     }
 
     public static function delete($primary){

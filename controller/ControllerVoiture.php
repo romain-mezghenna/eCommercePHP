@@ -1,7 +1,7 @@
 <?php
 require_once (File::build_path(array('model','ModelVoiture.php')));// chargement du modèle
 class ControllerVoiture {
-    protected static $object = 'voitures';
+    protected static $object = 'voitures'; // nom du dossier pour les vues
 
     public static function readAll() {
         $tab_v = ModelVoiture::selectAll(); //appel au modèle pour gerer la BD

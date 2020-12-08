@@ -21,6 +21,9 @@
             <a class="textmenudroite" href="index.php?action=create&controller=voiture">Ajouter Une voiture</a>
             <a class="textmenudroite" href="index.php?controller=client">Listes des clients</a>
             <a class ="textmenudroite" href="index.php?controller=client&action=create">Ajouter un client</a>
+            <a class="textmenudroite" href="index.php?controller=commande">Liste des commandes</a>
+            <a class="textmenudroite" href="index.php?action=create&controller=commande">Ajouter une commande</a>
+
         </div>
         <div id="panier">
             <img src="<?php echo File::build_path(array('images','panier.png'));?>" alt="">

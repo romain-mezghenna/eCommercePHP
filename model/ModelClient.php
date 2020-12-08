@@ -62,10 +62,6 @@ class ModelClient extends Model {
     $this->password = $password;
   }
 
-  public static function getCpt(){
-    self::$cpt++;
-    return self::$cpt;
-  }
 
   public function __construct($i = NULL, $n = NULL, $p = NULL, $m = NULL, $pass = NULL){
     if (!is_null($i) && !is_null($n)  && !is_null($p) && !is_null($m) && !is_null($pass)) {
