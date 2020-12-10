@@ -1,5 +1,6 @@
 <?php
 require_once (File::build_path(array('model','ModelClient.php')));// chargement du modèle
+require_once (File::build_path(array('lib','Security.php'))); // chargement de la fonction de hachage
 class ControllerClient
 {
     protected static $object='client';
@@ -81,7 +82,7 @@ class ControllerClient
             'nom'=>$_GET['nom'],
             'prenom'=>$_GET['prenom'],
             'mail'=>$_GET['mail'],
-            'password'=>$_GET['password']
+            'password'=>Security::hacher($_GET['password'])
 
         );
         $estModifiee = ModelClient::update($data);
@@ -98,12 +99,15 @@ class ControllerClient
 
     }
     public static function created(){
+        if($_GET['passwordconf']==$_GET['password']){
+
+        $erreur ="";
         $data = array(
             'idClient'=>ModelClient::getCpt(),
             'nom'=>$_GET['nom'],
             'prenom'=>$_GET['prenom'],
             'mail'=>$_GET['mail'],
-            'password'=>$_GET['password']
+            'password'=>Security::hacher($_GET['password'])
 
         );
         $estcree=ModelClient::save($data);
@@ -116,6 +120,23 @@ class ControllerClient
             $pagetitle='Client Crée';
             require(File::build_path(array('view','view.php')));
             self::readAll();
+        }
+
+        } else {
+            $erreur = "<h1> Les deux mots de passe ne correspondent pas </h1>";
+            $view='update';
+            $pagetitle='Création d\'un client';
+            $data = array(
+                'idClient'=>"",
+                'nom'=>"",
+                'prenom'=>"",
+                'mail'=>"",
+                'password'=>""
+
+            );
+            $type='create';
+            require(File::build_path(array('view','view.php')));
+
         }
     }
     /*
