@@ -17,7 +17,7 @@ class ModelCommande extends Model
     }
 
 
-    public function setIdCommande($IDCommande)
+    public function setIdCommande($idCommande)
     {
         $this->IDCommande = $idCommande;
     }

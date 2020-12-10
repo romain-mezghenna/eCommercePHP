@@ -2,6 +2,7 @@
 require_once 'ControllerVoiture.php';
 require_once 'ControllerClient.php';
 require_once 'ControllerCommande.php';
+require_once 'ControllerPanier.php';
 if (isset($_GET['action'])){
     $action = $_GET['action'];
 } else {

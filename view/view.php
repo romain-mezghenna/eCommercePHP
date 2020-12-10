@@ -23,6 +23,7 @@
             <a class ="textmenudroite" href="index.php?controller=client&action=create">Ajouter un client</a>
             <a class="textmenudroite" href="index.php?controller=commande">Liste des commandes</a>
             <a class="textmenudroite" href="index.php?action=create&controller=commande">Ajouter une commande</a>
+            <a class="textmenudroite" href="index.php?controller=panier">Voir votre panier</a>
 
         </div>
         <div id="panier">
@@ -30,6 +31,7 @@
         </div>
     </div>
 </header>
+
 <!--------------header--------->
 
 <body>

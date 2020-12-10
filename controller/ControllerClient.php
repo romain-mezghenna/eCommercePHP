@@ -118,5 +118,17 @@ class ControllerClient
             self::readAll();
         }
     }
+    /*
+    public static function account(){
+
+        if(isset($_SESSION['login'])){
+            $idClient = $_GET['idClient'];
+            $c = ModelClient::select($idClient);
+        } else {
+
+        }
+
+
+    }*/
 
 }

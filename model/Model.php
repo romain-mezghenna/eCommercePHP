@@ -3,9 +3,7 @@ require_once(File::build_path(array('config','Conf.php')));
 
 class Model {
 
-    public static $pdo;
-
-    public static function Init() {
+    public static $pdo;public static function Init() {
         $hostname = Conf::getHostname();
         $database_name = Conf::getDatabase();
         $login  = Conf::getLogin();
