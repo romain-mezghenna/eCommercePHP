@@ -40,7 +40,7 @@ class ControllerCommande
 
     public static function created(){
         $data = array(
-            'idCommande'=>$_GET['idCommande'],
+            'idCommande'=>ModelCommande::getCpt(),
             'montant'=>$_GET['montant'],
             'date'=>$_GET['date']
         );

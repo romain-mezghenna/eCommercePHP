@@ -5,7 +5,7 @@ class ControllerPanier {
 
 
     public static function readAll(){
-        if (isset($_SESSION['panier'])){
+        if (isset($_SESSION['panier']) && !empty($_SESSION['panier'])){
             $tab_v = array();
             $tab_count = array_count_values($_SESSION['panier']);
             foreach ($_SESSION['panier'] as $key => $id){
