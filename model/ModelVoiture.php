@@ -94,9 +94,22 @@ class ModelVoiture extends Model {
     }
   }
 
-  // une methode d'affichage.
-  public function afficher() {
-    echo "Voiture d'immatriculation $this->immatriculation, de modele $this->modele, de marque $this->marque, dont le prix est $this->prix, d'année $this->annee et de statut $this->statut <br>";
+  public function afficher()
+  {
+    echo "<div class=\"container\">
+            <a>
+            <img src=\"images/$this->immatriculation.jpg\">
+        </a>
+            <p class=\"description\">
+                Immatriculation $this->immatriculation<br>
+                 Modele $this->modele<br>
+                  Marque $this->marque<br>
+                   Prix $this->prix<br>
+                    Année $this->annee<br>
+<br>
+            </p>
+            <a href=\"index.php?controller=panier&action=add&immatriculation=" . htmlspecialchars($this->immatriculation) . "\">Ajouter cette voiture à votre panier </a>
+        </div>";
   }
 
 }

@@ -1,5 +1,6 @@
 <?php
-require_once (File::build_path(array('model','ModelClient.php')));// chargement du modèle
+require_once (File::build_path(array('model','ModelClient.php')));
+// chargement du modèle
 require_once (File::build_path(array('lib','Security.php'))); // chargement de la fonction de hachage
 class ControllerClient
 {
@@ -29,16 +30,19 @@ class ControllerClient
 
     public static function delete(){
         $idclient = $_GET['idClient'];
+        $c=ModelClient::select($idclient);
+        if($c->getMail()==$_SESSION['login']){
         $isDelete = ModelClient::delete($idclient);
         if($isDelete==false){
             $view='error';
             $pagetitle='Erreur';
             require(File::build_path(array('view','view.php')));
         } else{
-            $view='deleted';
-            $pagetitle='Client Supprimé';
-            require(File::build_path(array('view','view.php')));
+            $messageconfirmation = "Client supprimé";
             self::readAll();
+        }}
+        else {
+            self::connect();
         }
 
     }
@@ -61,17 +65,22 @@ class ControllerClient
     public static function update(){
         $idclient = $_GET['idClient'];
         $c=ModelClient::select($idclient);
+
+        if($c->getMail()==$_SESSION['login']){
         $view='update';
-        $pagetitle="Modifier une voiture";
+        $pagetitle="Modifier un  client";
         $data = array(
             'idClient'=>$c->getIdClient(),
             'nom'=>$c->getNom(),
             'prenom'=>$c->getPrenom(),
             'mail'=>$c->getMail(),
-            'password'=>$c->getPassword()
+            'password'=>""
         );
         $type='update';
-        require (File::build_path(array('view','view.php')));
+        require (File::build_path(array('view','view.php')));}
+        else {
+           self::connect();
+        }
     }
 
     public static function updated(){
@@ -82,14 +91,12 @@ class ControllerClient
             'nom'=>$_GET['nom'],
             'prenom'=>$_GET['prenom'],
             'mail'=>$_GET['mail'],
-            'password'=>Security::hacher($_GET['password'])
-
+            'password'=>Security::hacher($_GET['password']),
+            'admin' => (bool)$_GET['admin']
         );
         $estModifiee = ModelClient::update($data);
         if ($estModifiee){
-            $view = 'updated';
-            $pagetitle="Client modifié";
-            require (File::build_path(array('view','view.php')));
+            $messageconfirmation = "Client modifié";
             self::readAll();
         } else {
             $view='error';
@@ -107,7 +114,8 @@ class ControllerClient
             'nom'=>$_GET['nom'],
             'prenom'=>$_GET['prenom'],
             'mail'=>$_GET['mail'],
-            'password'=>Security::hacher($_GET['password'])
+            'password'=>Security::hacher($_GET['password']),
+            "admin" => (bool)$_GET['admin']
 
         );
         $estcree=ModelClient::save($data);
@@ -116,9 +124,7 @@ class ControllerClient
             $pagetitle='Erreur';
             require(File::build_path(array('view','view.php')));
         } else{
-            $view='created';
-            $pagetitle='Client Crée';
-            require(File::build_path(array('view','view.php')));
+            $messageconfirmation = "Client créer";
             self::readAll();
         }
 
@@ -128,10 +134,10 @@ class ControllerClient
             $pagetitle='Création d\'un client';
             $data = array(
                 'idClient'=>"",
-                'nom'=>"",
-                'prenom'=>"",
-                'mail'=>"",
-                'password'=>""
+                'nom'=>$_GET['nom'],
+                'prenom'=>$_GET['prenom'],
+                'mail'=>$_GET['mail'],
+                'password'=>$_GET['password']
 
             );
             $type='create';
@@ -141,17 +147,47 @@ class ControllerClient
     }
 
 
-    /*
-    public static function account(){
+    public static function connect(){
+        $pagetitle="Connexion";
+        $data = array("login" => "",
+            "password" => "");
+        $view="connect";
+        require(File::build_path(array('view','view.php')));
+    }
 
-        if(isset($_SESSION['login'])){
-            $idClient = $_GET['idClient'];
-            $c = ModelClient::select($idClient);
+    public static function connected(){
+        if (ModelClient::checkPassword($_GET['login'],Security::hacher($_GET['password']))){
+            $_SESSION['login']=$_GET['login'];
+            $c=ModelClient::getClientbyMail($_GET['login']);
+
+            if((bool)$c->getAdmin()){
+                $_SESSION['admin']=$c->getAdmin();
+            }
+            if(!$c){
+                $view='error';
+                $pagetitle='Erreur';
+                require(File::build_path(array('view','view.php')));
+            }else {
+                $view = 'detail';
+                $pagetitle = 'Détail d\'un client';
+                require(File::build_path(array('view', 'view.php')));
+            }
+
         } else {
+            $erreur = "Les informations ne sont pas bonnes";
+            $data = array("login" => $_GET['login'],
+                "password" =>$_GET['password'] );
+            $pagetitle="Connexion";
+            $view="connect";
+            require(File::build_path(array('view','view.php')));
 
         }
+    }
 
-
-    }*/
+    public static function disconnect(){
+        unset($_SESSION['login']);
+        unset($_SESSION['admin']);
+        self::readAll();
+    }
 
 }

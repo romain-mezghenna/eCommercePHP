@@ -27,7 +27,7 @@ class ControllerPanier {
       }  else {
           $_SESSION['panier']=array($_GET['immatriculation']);
       }
-
+      $messageconfirmation = "Voiture ajoutée";
       ControllerVoiture::readAll();
     }
 

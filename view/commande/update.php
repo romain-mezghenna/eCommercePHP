@@ -10,6 +10,10 @@
             <input type="date" value="<?php echo htmlspecialchars($data['date']);?>" name="date" id="date" required/>
         </p>
         <p>
+            <input type="hidden" name="idClient" value="<?php
+                $client = ModelClient::getClientbyMail($_SESSION['login']);
+                echo $client->getIdClient();
+            ?>"/>
             <input type="hidden" name="action" value="<?php if($type=='create'){echo 'created';} else {echo 'updated';}?>" />
             <input type="hidden" name="controller" value="commande"/>
             <input type="submit" value="Envoyer" />

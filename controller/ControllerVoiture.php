@@ -56,9 +56,7 @@ class ControllerVoiture {
             $pagetitle='Erreur';
             require(File::build_path(array('view','view.php')));
         } else{
-            $view='created';
-            $pagetitle='Voiture Crée';
-            require(File::build_path(array('view','view.php')));
+            $messageconfirmation = "Voiture créee";
             self::readAll();
         }
     }
@@ -77,9 +75,7 @@ class ControllerVoiture {
             $pagetitle='Erreur';
             require(File::build_path(array('view','view.php')));
         } else{
-            $view='deleted';
-            $pagetitle='Voiture Supprimée';
-            require(File::build_path(array('view','view.php')));
+            $messageconfirmation = "Voiture supprimée";
             self::readAll();
         }
 
@@ -117,9 +113,7 @@ class ControllerVoiture {
         );
         $estModifiee = ModelVoiture::update($data);
         if ($estModifiee){
-            $view = 'updated';
-            $pagetitle="Voiture modifiée";
-            require (File::build_path(array('view','view.php')));
+            $messageconfirmation = "Voiture modifiée";
             self::readAll();
         } else {
             $view='error';

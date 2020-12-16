@@ -9,9 +9,10 @@
             <input type="text" value="<?php echo htmlspecialchars($data['mail']);?>" name="mail" id="mail" required/>
             <label for="prix">Mot de passe</label> :
             <input type="password" value="<?php echo htmlspecialchars($data['password']);?>" name="password" id="password" required/>
-        <label for="prix">Confirmer le mot de passe</label> :
-        <input type="password" value="<?php echo htmlspecialchars($data['password']);?>" name="passwordconf" id="passwordconf" required/>
-
+            <label for="prix">Confirmer le mot de passe</label> :
+            <input type="password" value="<?php echo htmlspecialchars($data['password']);?>" name="passwordconf" id="passwordconf" required/>
+            <label for="admin ">Administrateur</label>
+            <input type="checkbox" name="admin" id="admin" value="1" />
         </p>
         <p>
 

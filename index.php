@@ -11,7 +11,7 @@ if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 
 }
 
 require_once ( __DIR__ . DIRECTORY_SEPARATOR . 'lib' . DIRECTORY_SEPARATOR . 'File.php');
-require_once ( __DIR__ . DIRECTORY_SEPARATOR . 'lib' . DIRECTORY_SEPARATOR . 'Session.php');
+require_once (File::build_path(array('lib','Session.php')));
 
 require_once (File::build_path(array('controller','routeur.php')));
 ?>

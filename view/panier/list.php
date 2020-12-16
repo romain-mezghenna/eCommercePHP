@@ -17,4 +17,7 @@ foreach ($tab_v as $v){
         $tab_tmp[$v->getimmatriculation()]--;
     }
 }
+if (isset($_SESSION['login'])){
+    echo ' <a href= "index.php?action=purchase&controller=commande&idClient='. $user->getIdClient()   .' ">Commander</a> </p>';
+} else echo "Veuillez vous connecter pour commander";
 ?>

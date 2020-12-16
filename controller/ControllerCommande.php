@@ -22,7 +22,9 @@ class ControllerCommande
             require(File::build_path(array('view','view.php')));
         }else
             $view='detail';
-        $pagetitle='Détail d\'une commande';
+            $pagetitle='Détail d\'une commande';
+            $tabcars = $c->getCars();
+
         require(File::build_path(array('view','view.php')));
     }
 
@@ -31,8 +33,8 @@ class ControllerCommande
         $pagetitle='Création d\'une commande';
         $data = array(
             'idCommande'=>"",
-            'montant'=>"",
-            'date'=>""
+            'montant'=>""
+
         );
         $type='create';
         require(File::build_path(array('view','view.php')));
@@ -42,7 +44,7 @@ class ControllerCommande
         $data = array(
             'idCommande'=>ModelCommande::getCpt(),
             'montant'=>$_GET['montant'],
-            'date'=>$_GET['date']
+            'idClient' => $_GET['idClient']
         );
         $estcree=ModelCommande::save($data);
         if($estcree==false){
@@ -50,9 +52,7 @@ class ControllerCommande
             $pagetitle='Erreur';
             require(File::build_path(array('view','view.php')));
         } else{
-            $view='created';
-            $pagetitle='commande Crée';
-            require(File::build_path(array('view','view.php')));
+            $messageconfirmation = "Commande créee";
             self::readAll();
         }
     }
@@ -71,9 +71,7 @@ class ControllerCommande
             $pagetitle='Erreur';
             require(File::build_path(array('view','view.php')));
         } else{
-            $view='deleted';
-            $pagetitle='commande Supprimée';
-            require(File::build_path(array('view','view.php')));
+            $messageconfirmation = "Commande supprimé";
             self::readAll();
         }
 
@@ -99,13 +97,12 @@ class ControllerCommande
         $data = array(
             'idCommande'=>$idCommande,
             'montant'=>$_GET['montant'],
-            'date'=>$_GET['date']
+
+            'idClient' => $_GET['idClient']
         );
         $estModifiee = ModelCommande::update($data);
         if ($estModifiee){
-            $view = 'updated';
-            $pagetitle="commande modifiée";
-            require (File::build_path(array('view','view.php')));
+            $messageconfirmation = "Commande modifiée";
             self::readAll();
         } else {
             $view='error';
@@ -114,6 +111,43 @@ class ControllerCommande
         }
 
 
+    }
+
+    public static function purchase(){
+        $tab_v = array();
+        $montantTotal=0;
+        $tab_count = array_count_values($_SESSION['panier']);
+        foreach ($_SESSION['panier'] as $key => $id){
+            array_push($tab_v,ModelVoiture::select($id));
+        }
+        foreach ($tab_v as $v){
+            $montantTotal+=$v->getPrix();
+        }
+        $data = array(
+            'idCommande'=>ModelCommande::getCpt(),
+            'montant'=>$montantTotal,
+            'idClient' => $_GET['idClient']
+        );
+
+        $estcree=ModelCommande::save($data);
+        if (!$estcree){
+            $view='error';
+            $pagetitle='Erreur';
+            require(File::build_path(array('view','view.php')));
+        } else {
+
+
+            foreach ($tab_v as $v){
+                $info = array(
+                    'immatriculation' => $v->getImmatriculation(),
+                    'qte' => $tab_count[$v->getImmatriculation()],
+                    'idCommande' => $data['idCommande']
+                );
+                ModelCommande::saveCar($info);
+            }
+
+            self::readAll();
+        }
     }
 
 }
